@@ -5,30 +5,32 @@ const redirectURI = 'http://localhost:3000/';
 let authURL = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURI}`; //retrieve access token
 let responseURL = ''; //should contain access token
 let usersId = '';
-let playlistId = '';
+let playlistId;
 
 export const Spotify = {
   getAccessToken() {
     if(accessToken)
-      return accessToken;
+      return accessToken[1];
 
     responseURL = window.location.href;
     accessToken = responseURL.match(/access_token=([^&]*)/);
     if (accessToken) {
       expiresIn = responseURL.match(/expires_in=([^&]*)/);
-      window.setTimeout(() => accessToken = '', expiresIn * 1000);
+      window.setTimeout(() => accessToken[1] = '', expiresIn * 1000);
       window.history.pushState('Access Token', null, '/');
-      return accessToken;
+      return accessToken[1];
     }
 
     window.location = authURL;
   },
 
   search(term) {
+    if (!accessToken)
+      this.getAccessToken();
     return fetch(
       `https://api.spotify.com/v1/search?type=track&q=${term}`, {
           headers: {
-            Authorization: `Bearer ${accessToken}`
+            Authorization: `Bearer ${accessToken[1]}`
           }
         })
     .then(response => {
@@ -41,12 +43,15 @@ export const Spotify = {
       jsonResponse => {
         if (jsonResponse.tracks) {
           console.log(jsonResponse.tracks);
-          return jsonResponse.tracks.map(track => {
-            id: track.id,
-            name: track.name,
-            artist: track.artists[0].name,
-            album: track.album.name,
-            URI: track.uri
+          return jsonResponse.tracks.items.map(track => {
+            return {
+              id: track.id,
+              name: track.name,
+              artist: track.artists[0].name,
+              album: track.album.name,
+              URI: track.uri
+            };
+            
           });
         }
         return [];
@@ -74,6 +79,7 @@ export const Spotify = {
         'name': name
       })
     }).then(response => response.json()).then(jsonResponse => playlistId = jsonResponse.id);
+    console.log(playlistId);
   }
 };
 

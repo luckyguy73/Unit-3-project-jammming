@@ -16,7 +16,7 @@ export class Track extends Component {
     this.props.onRemove(this.props.track);
   }
 
-  renderAction() {
+  renderAction(isRemoval) {
     if (isRemoval)
       return <a className="Track-action" onClick={this.removeTrack}>-</a>;
     return <a className="Track-action" onClick={this.addTrack}>+</a>;
@@ -29,7 +29,7 @@ export class Track extends Component {
           <h3>{this.props.track.name}</h3>
           <p>{this.props.track.artist} | {this.props.track.album}</p>
         </div>
-        {this.renderAction()}
+        {this.renderAction(false)}
       </div>
     );
   }

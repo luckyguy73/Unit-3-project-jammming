@@ -13,16 +13,15 @@ export class SearchBar extends Component {
   }
 
   handleTermChange(e) {
-    this.search(e.target.value);
+    e.preventDefault();
+    this.search(document.getElementById('search').value);
   }
 
   render() {
     return (
       <div className="SearchBar">
-        <input placeholder="Enter A Song, Album, or Artist" 
-          onChange={this.handleTermChange}
-        />
-        <a>SEARCH</a>
+        <input id='search' placeholder="Enter A Song, Album, or Artist" />
+        <a onClick={this.handleTermChange} >SEARCH</a>
       </div>
     );
   }
