@@ -71,23 +71,35 @@ export const Spotify = {
     if (!name || !tracks) {
       return;
     }
-    fetch('https://api.spotify.com/v1/me', {
+
+    if (accessToken === '') {
+      this.getAccessToken();
+    }
+
+    return fetch('https://api.spotify.com/v1/me', {
             headers: {
               Authorization: `Bearer ${accessToken}`
             }
           })
-    .then(response => response.json()).then(jsonResponse => usersId = jsonResponse.id);
-    fetch(`https://api.spotify.com/v1/users/${usersId}/playlists`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        'name': name
-      })
-    }).then(response => response.json()).then(jsonResponse => playlistId = jsonResponse.id);
-    console.log(playlistId);
+    .then(response => response.json()).then(jsonResponse => {
+      usersId = jsonResponse.id;
+      fetch(`https://api.spotify.com/v1/users/${usersId}/playlists`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              'name': name
+            })
+          }).then(response => response.json()).then(jsonResponse => {
+
+            playlistId = jsonResponse.id;
+            console.log('playlistId: ' + playlistId);
+            return playlistId;
+          })
+    });
+    
   }
 };
 
