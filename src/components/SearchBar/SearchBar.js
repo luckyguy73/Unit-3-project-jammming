@@ -20,7 +20,7 @@ export class SearchBar extends Component {
   render() {
     return (
       <div className="SearchBar">
-        <input id='search' placeholder="Enter A Song, Album, or Artist" />
+        <input id='search' type='search' placeholder="Enter A Song, Album, or Artist" />
         <a onClick={this.handleTermChange} >SEARCH</a>
       </div>
     );

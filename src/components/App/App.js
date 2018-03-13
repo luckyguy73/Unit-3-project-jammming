@@ -14,51 +14,9 @@ export class App extends Component {
     this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
     this.state = {
-      searchResults: [
-        {
-          name: 'Beat It',
-          artist: 'Michael Jackson',
-          album: 'Thriller'
-        },
-        {
-          name: 'Head Over Heels',
-          artist: 'The Go-Go\'s',
-          album: 'Talk Show'
-        },
-        {
-          name: 'Smells Like Teen Spirit',
-          artist: 'Nirvana',
-          album: 'Nevermind'
-        },
-        {
-          name: 'Welcome to the Jungle',
-          artist: 'Guns N\' Roses',
-          album: 'Appetite for Destruction'
-        }
-      ],
-      playlistName: 'Megajams',
-      playlistTracks: [
-        {
-          name: 'Beat It',
-          artist: 'Michael Jackson',
-          album: 'Thriller'
-        },
-        {
-          name: 'Head Over Heels',
-          artist: 'The Go-Go\'s',
-          album: 'Talk Show'
-        },
-        {
-          name: 'Smells Like Teen Spirit',
-          artist: 'Nirvana',
-          album: 'Nevermind'
-        },
-        {
-          name: 'Welcome to the Jungle',
-          artist: 'Guns N\' Roses',
-          album: 'Appetite for Destruction'
-        }
-      ],
+      searchResults: [],
+      playlistName: '',
+      playlistTracks: [],
     };
   }
 

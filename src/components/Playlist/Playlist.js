@@ -15,6 +15,7 @@ export class Playlist extends Component {
     return (
       <div className="Playlist">
         <input 
+          type='search'
           defaultValue={'New Playlist'}
           onChange={this.handleNameChange}
         />
