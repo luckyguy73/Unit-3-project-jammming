@@ -6,7 +6,8 @@ const redirectURI = 'http://localhost:3000/';
 let authURL = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURI}`; //retrieve access token
 let responseURL = ''; //should contain access token
 let usersId = '';
-let playlistId;
+let playlistId = '';
+let playlistURI = [];
 
 export const Spotify = {
   getAccessToken() {
@@ -95,13 +96,25 @@ export const Spotify = {
           }).then(response => response.json()).then(jsonResponse => {
 
             playlistId = jsonResponse.id;
-            console.log('playlistId: ' + playlistId);
-            return playlistId;
+            playlistURI = tracks.map(track => track.URI);
+            console.log('uri: ' + playlistURI);
+            fetch(`https://api.spotify.com/v1/users/${usersId}/playlists/${playlistId}/tracks`, {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                'uris': playlistURI
+              })
+            }).then(response => response.json())
           })
     });
     
   }
 };
+
+
 
 
 

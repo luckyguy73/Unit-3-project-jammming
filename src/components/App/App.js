@@ -14,6 +14,7 @@ export class App extends Component {
     this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
     this.state = {
+      isRemoval: true,
       searchResults: [],
       playlistName: '',
       playlistTracks: [],
@@ -21,11 +22,21 @@ export class App extends Component {
   }
 
   addTrack(track) {
-    // # 41
+    let temp = this.state.playlistTracks.find(t => t.id === track.id);
+    if (temp === undefined) {
+      let newTracks = this.state.playlistTracks;
+      newTracks.push(track);
+      this.setState({
+        playlistTracks: newTracks
+      });
+    }
   }
 
   removeTrack(track) {
-    // # 49
+    let temp = this.state.playlistTracks.filter(p => p.id !== track.id);
+    this.setState({
+      playlistTracks: temp
+    });
   }
 
   updatePlaylistName(name) {
@@ -36,7 +47,7 @@ export class App extends Component {
     Spotify.savePlaylist(name, tracks).then(name => {
       this.setState({
         playlistName: name,
-        searchResults: []
+        playlistTracks: []
       });
     })
   }
@@ -66,6 +77,7 @@ export class App extends Component {
               onRemove={this.removeTrack}
               onNameChange={this.updatePlaylistName}
               onSave={this.savePlaylist}
+              isRemoval={this.state.isRemoval}
             />
           </div>
         </div>
